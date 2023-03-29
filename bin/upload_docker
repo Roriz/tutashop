@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+if [ -z "$1" ]
+then
+  echo "please insert a name in kebab-case as argument"
+  exit 1
+fi
+
+# Load environment variables from .env file
+export $(grep -v '^#' .env | xargs)
+
+ECR_URL=687064528389.dkr.ecr.us-east-1.amazonaws.com
+ECR_REPOSITORY_NAME=$1
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URL
+
+docker build -t $ECR_URL/$ECR_REPOSITORY_NAME:latest .
+
+docker push $ECR_URL/$ECR_REPOSITORY_NAME:latest
