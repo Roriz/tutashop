@@ -6,7 +6,7 @@ class WorkshopController < ApplicationController
   end
 
   def raise
-    raise 'Something went wrong'
+    exit(0)
   end
 
   def heavy_process
